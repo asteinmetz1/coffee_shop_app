@@ -14,7 +14,7 @@ from DATA.ui_color import make_it_pretty
 make_it_pretty()
 user_login_check()
 
-st.title("Coffee Shop Ratings")
+st.title("Coffee Shop Ratings (vs. Average)")
 coffee_shop_df = db_file.return_coffee_shop_table()
 coffee_shop_list = [f"{row['name']} - {row['location']}" for index, row in coffee_shop_df.iterrows()]
 try:
