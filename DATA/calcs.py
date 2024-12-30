@@ -1,12 +1,13 @@
 import pg8000
 import pandas as pd
+import streamlit as st
 
 # Database credentials
-DB_HOST = '34.58.9.59'
-DB_PORT = 5432
-DB_NAME = 'postgres'
-DB_USER = 'postgres'
-DB_PASSWORD = 'A[*d(Q0Nkup`[xlI'
+DB_HOST = st.secrets["database"]["db_host"]
+DB_PORT = st.secrets["database"]["db_port"]
+DB_NAME = st.secrets["database"]["db_name"]
+DB_USER = st.secrets["database"]["db_user"]
+DB_PASSWORD = st.secrets["database"]["db_password"]
 
 # Create a connection to the PostgreSQL database
 def get_connection():
