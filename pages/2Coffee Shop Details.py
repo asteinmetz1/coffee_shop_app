@@ -8,12 +8,10 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
 import DATA.database as db_file
 import DATA.calcs as calcs
-from DATA.ui_color import make_it_pretty
+st.logo("Images/Brew'd-logo.png")
 
 # --------------PAGE CODE------------------- #
-make_it_pretty()
 user_login_check()
-
 st.title("Coffee Shop Ratings (vs. Average)")
 coffee_shop_df = db_file.return_coffee_shop_table()
 coffee_shop_list = [f"{row['name']} - {row['location']}" for index, row in coffee_shop_df.iterrows()]

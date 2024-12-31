@@ -99,7 +99,8 @@ def return_coffee_shop_ratings_table():
     JOIN
         coffee_shops ON ratings.shop_id = coffee_shops.shop_id
     GROUP BY
-    coffee_shops.name, coffee_shops.location, coffee_shops.shop_id;
+    coffee_shops.name, coffee_shops.location, coffee_shops.shop_id
+    order by Score desc;
     '''
     conn = get_connection()
     first_result = pd.read_sql_query(query, conn)

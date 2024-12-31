@@ -7,10 +7,10 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
 import DATA.database as db_file
-from DATA.ui_color import make_it_pretty
+from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table, return_all_ratings
 
 # --------------PAGE CODE------------------- #
-make_it_pretty()
+st.logo("Images/Brew'd-logo.png")
 user_login_check()
 
 st.title("Submit a Rating")
@@ -79,5 +79,8 @@ else:
         db_file.add_a_new_coffee_shop(new_coffee_shop_name, new_coffee_shop_location)
         st.write('Coffee Shop Added')
         st.rerun()
+
+st.subheader('Coffee Shops in Database')
+st.dataframe(return_coffee_shop_table(), hide_index=True)
 
 show_logged_in_user()

@@ -1,24 +1,21 @@
 import streamlit as st
 import sys
 import os
+st.logo("Images/Brew'd-logo.png")
 
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
 from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table, return_all_ratings
-from DATA.ui_color import make_it_pretty
 
 # --------------PAGE CODE------------------- #
-make_it_pretty()
+st.logo("Images/Brew'd-logo.png")
 user_login_check()
 
 st.title("Ratings Summary Page")
-st.subheader('List of Rated Coffee Shops')
-st.dataframe(return_coffee_shop_table(), hide_index=True)
-st.divider()
 
-st.subheader('Coffee Shop Ratings by Category')
+st.subheader('Coffee Shop Rankings')
 st.dataframe(return_coffee_shop_ratings_table(), hide_index=True)
 st.write('**Default Weighting**: 40% vibe | 30% coffee | 10% convenience | 10% food | 10% price')
 
