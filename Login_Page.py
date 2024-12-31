@@ -1,7 +1,7 @@
 import streamlit as st
 import sys
 import os
-st.logo("Images/Brew'd-logo.png")
+st.logo("Images/Brew'd-logo.png", size='large')
 
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))

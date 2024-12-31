@@ -10,7 +10,7 @@ from DATA.database import return_coffee_shop_table
 from DATA.database import add_rating_to_coffee_shop
 import DATA.database as db_file
 # --------------PAGE CODE------------------- #
-st.logo("Images/Brew'd-logo.png")
+st.logo("Images/Brew'd-logo.png", size='large')
 
 user_login_check_logout_page()
 

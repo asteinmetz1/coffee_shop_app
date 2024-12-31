@@ -10,7 +10,7 @@ import DATA.database as db_file
 from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table, return_all_ratings
 
 # --------------PAGE CODE------------------- #
-st.logo("Images/Brew'd-logo.png")
+st.logo("Images/Brew'd-logo.png", size='large')
 user_login_check()
 
 st.title("Submit a Rating")

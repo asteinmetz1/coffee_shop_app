@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
 import DATA.database as db_file
 import DATA.calcs as calcs
-st.logo("Images/Brew'd-logo.png")
+st.logo("Images/Brew'd-logo.png", size='large')
 
 # --------------PAGE CODE------------------- #
 user_login_check()
