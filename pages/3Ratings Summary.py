@@ -6,7 +6,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
-from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table
+from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table, return_all_ratings
 from DATA.ui_color import make_it_pretty
 
 # --------------PAGE CODE------------------- #
@@ -53,4 +53,10 @@ if sum([custom_vibe_weight, custom_coffee_weight, custom_convenience_weight, cus
     st.error('Your weights must sum to 100')
 st.write(
     f'**Your Weighting**: {round(custom_vibe_weight*100)}% vibe | {round(custom_coffee_weight*100)}% coffee | {round(custom_convenience_weight*100)}% convenience | {round(custom_food_weight*100)}% food | {round(custom_price_weight*100)}% price')
+
+st.divider()
+st.subheader('All Ratings')
+
+st.dataframe(return_all_ratings(),hide_index=True)
+
 show_logged_in_user()

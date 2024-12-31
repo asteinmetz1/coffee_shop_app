@@ -6,7 +6,6 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from DATA.auth import get_user_credentials, new_user, show_logged_in_user, validate_user
 import DATA.database as db_file
-from DATA.ui_color import make_it_pretty
 
 # Initialize session state for login
 if 'logged_in' not in st.session_state:

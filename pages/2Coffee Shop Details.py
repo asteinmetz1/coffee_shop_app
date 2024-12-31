@@ -31,24 +31,28 @@ coffee_shop_weighted_rating_df = calcs.return_weighted_rating_for_a_coffee_shop(
 all_coffee_shops_weighted_average_df = calcs.return_weighted_rating_for_all_coffee_shops()
 
 # region Selected Coffee Shop Metrics
+if coffee_shop_weighted_rating_df.empty:
+    st.error("No data available for the selected coffee shop.")
+    st.stop()
+
 try:
-    weighted_rating = coffee_shop_weighted_rating_df['weightedscore'][0]
-    coffee_rating = coffee_shop_weighted_rating_df['coffeeratingavg'][0]
-    vibe_rating = coffee_shop_weighted_rating_df['viberatingavg'][0]
-    price_rating = coffee_shop_weighted_rating_df['priceratingavg'][0]
-    food_rating = coffee_shop_weighted_rating_df['foodratingavg'][0]
-    convenience_rating = coffee_shop_weighted_rating_df['convenienceratingavg'][0]
+    weighted_rating = coffee_shop_weighted_rating_df['Score'][0]
+    coffee_rating = coffee_shop_weighted_rating_df['Coffee'][0]
+    vibe_rating = coffee_shop_weighted_rating_df['Vibe'][0]
+    price_rating = coffee_shop_weighted_rating_df['Price'][0]
+    food_rating = coffee_shop_weighted_rating_df['Food'][0]
+    convenience_rating = coffee_shop_weighted_rating_df['Convenience'][0]
 except KeyError as e:
     st.error(f"KeyError: {e}. No data available for the selected coffee shop.")
     st.stop()
 
 # region All Coffee Shop Metrics
-all_shops_weighted_rating = all_coffee_shops_weighted_average_df['weightedscore'][0]
-all_shops_coffee_rating = all_coffee_shops_weighted_average_df['coffeeratingavg'][0]
-all_shops_vibe_rating = all_coffee_shops_weighted_average_df['viberatingavg'][0]
-all_shops_price_rating = all_coffee_shops_weighted_average_df['priceratingavg'][0]
-all_shops_food_rating = all_coffee_shops_weighted_average_df['foodratingavg'][0]
-all_shops_convenience_rating = all_coffee_shops_weighted_average_df['convenienceratingavg'][0]
+all_shops_weighted_rating = all_coffee_shops_weighted_average_df['Score'][0]
+all_shops_coffee_rating = all_coffee_shops_weighted_average_df['Coffee'][0]
+all_shops_vibe_rating = all_coffee_shops_weighted_average_df['Vibe'][0]
+all_shops_price_rating = all_coffee_shops_weighted_average_df['Price'][0]
+all_shops_food_rating = all_coffee_shops_weighted_average_df['Food'][0]
+all_shops_convenience_rating = all_coffee_shops_weighted_average_df['Convenience'][0]
 # endregion
 
 # region Difference from averages
@@ -63,7 +67,7 @@ convenience_rating_difference_from_average = (convenience_rating - all_shops_con
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
-    st.metric("Weighted Rating", round(weighted_rating, 1), f"{weighted_rating_difference_from_average:.0%}")
+    st.metric("Score", round(weighted_rating, 1), f"{weighted_rating_difference_from_average:.0%}")
 with col2:
     st.metric("Coffee", round(coffee_rating, 1), f"{coffee_rating_difference_from_average:.0%}")
 with col3:

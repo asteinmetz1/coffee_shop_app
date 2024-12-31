@@ -18,6 +18,11 @@ def get_connection():
         user=DB_USER,
         password=DB_PASSWORD
     )
+def format_column_names(df):
+    df.columns = [
+        col.replace("_", " ").title() for col in df.columns
+    ]  # Replace underscores with spaces and capitalize each word
+    return df
 
 # Get top coffee shops for a user
 def get_user_top_shops(user_id, limit, custom_coffee_weight=.3, custom_vibe_weight=.4, custom_food_weight=.1, custom_price_weight=.1, custom_convenience_weight=.1):
@@ -31,7 +36,7 @@ def get_user_top_shops(user_id, limit, custom_coffee_weight=.3, custom_vibe_weig
         {custom_food_weight} * avg(ratings.food_rating) +
         {custom_price_weight} * avg(ratings.price_rating) +
         {custom_convenience_weight} * avg(ratings.convenience_rating)
-    ) AS Your_Weighted_Score
+    ) AS Score
     FROM
         ratings
     JOIN
@@ -41,7 +46,7 @@ def get_user_top_shops(user_id, limit, custom_coffee_weight=.3, custom_vibe_weig
     GROUP BY
         coffee_shops.name, coffee_shops.location
     ORDER BY
-        Your_Weighted_Score DESC
+        Score DESC
     LIMIT {limit};
     """
     conn = get_connection()
@@ -70,29 +75,25 @@ def return_coffee_shop_table():
     conn.close()
     return table_df
 
-def format_column_names(df):
-    df.columns = [
-        col.replace("_", " ").title() for col in df.columns
-    ]  # Replace underscores with spaces and capitalize each word
-    return df
+
 def return_coffee_shop_ratings_table():
     """Fetch the coffee_shops table as a Pandas DataFrame with proper headers."""
     query = '''
     SELECT
-    coffee_shops.name AS Shop_Name,
-    coffee_shops.location AS Shop_Location,
+    coffee_shops.name AS Shop,
+    coffee_shops.location AS Location,
     (
         0.3 * avg(ratings.coffee_rating) +
         0.4 * avg(ratings.vibe_rating) +
         0.1 * avg(ratings.food_rating) +
         0.1 * avg(ratings.price_rating) +
         0.1 * avg(ratings.convenience_rating)
-    ) as Weighted_Score,
-    AVG(ratings.coffee_rating) AS Coffee_Rating_Avg,
-    AVG(ratings.vibe_rating) AS Vibe_Rating_Avg,
-    AVG(ratings.price_rating) AS Price_Rating_Avg,
-    AVG(ratings.food_rating) AS Food_Rating_Avg,
-    AVG(ratings.convenience_rating) AS Convenience_Rating_Avg
+    ) as Score,
+    AVG(ratings.coffee_rating) AS Coffee,
+    AVG(ratings.vibe_rating) AS Vibe,
+    AVG(ratings.price_rating) AS Price,
+    AVG(ratings.food_rating) AS Food,
+    AVG(ratings.convenience_rating) AS Convenience
     FROM
         ratings
     JOIN
@@ -111,18 +112,16 @@ def return_weighted_rating_for_a_coffee_shop(coffee_shop_id, coffee_weight=0.3, 
     SELECT
     coffee_shops.name AS shop_name,
     coffee_shops.location AS shop_location,
-    (
-        {coffee_weight} * avg(ratings.coffee_rating) +
-        {vibe_weight} * avg(ratings.vibe_rating) +
-        {food_weight} * avg(ratings.food_rating) +
-        {price_weight} * avg(ratings.price_rating) +
-        {convenience_weight} * avg(ratings.convenience_rating)
-    ) as WeightedScore,
-    AVG(ratings.coffee_rating) AS CoffeeRatingAvg,
-    AVG(ratings.vibe_rating) AS VibeRatingAvg,
-    AVG(ratings.price_rating) AS PriceRatingAvg,
-    AVG(ratings.food_rating) AS FoodRatingAvg,
-    AVG(ratings.convenience_rating) AS ConvenienceRatingAvg
+    ({coffee_weight} * avg(ratings.coffee_rating) +
+    {vibe_weight} * avg(ratings.vibe_rating) +
+    {food_weight} * avg(ratings.food_rating) +
+    {price_weight} * avg(ratings.price_rating) +
+    {convenience_weight} * avg(ratings.convenience_rating)) as Score,
+    AVG(ratings.coffee_rating) AS Coffee,
+    AVG(ratings.vibe_rating) AS Vibe,
+    AVG(ratings.price_rating) AS Price,
+    AVG(ratings.food_rating) AS Food,
+    AVG(ratings.convenience_rating) AS Convenience
     FROM
         ratings
     JOIN
@@ -132,7 +131,8 @@ def return_weighted_rating_for_a_coffee_shop(coffee_shop_id, coffee_weight=0.3, 
         coffee_shops.shop_id;
     '''
     conn = get_connection()
-    result = pd.read_sql_query(query, conn)
+    first_result = pd.read_sql_query(query, conn)
+    result = format_column_names(first_result)
     conn.close()
     return result
 
@@ -145,16 +145,47 @@ def return_weighted_rating_for_all_coffee_shops():
         0.1 * AVG(ratings.food_rating) +
         0.1 * AVG(ratings.price_rating) +
         0.1 * AVG(ratings.convenience_rating)
-    ) as WeightedScore,
-    avg(ratings.coffee_rating) AS coffeeratingavg,
-    avg(ratings.vibe_rating) AS viberatingavg,
-    avg(ratings.price_rating) AS priceratingavg,
-    avg(ratings.food_rating) AS foodratingavg,
-    avg(ratings.convenience_rating) AS convenienceratingavg
+    ) as Score,
+    avg(ratings.coffee_rating) AS Coffee,
+    avg(ratings.vibe_rating) AS Vibe,
+    avg(ratings.price_rating) AS Price,
+    avg(ratings.food_rating) AS Food,
+    avg(ratings.convenience_rating) AS Convenience
     from
         ratings;
     '''
     conn = get_connection()
-    result = pd.read_sql_query(query, conn)
+    result = format_column_names(pd.read_sql_query(query, conn))
+    conn.close()
+    return result
+def return_all_ratings():
+    query = '''
+    SELECT
+    users.username as User,
+    coffee_shops.name AS Shop,
+    coffee_shops.location AS Location,
+        (0.3 * (ratings.coffee_rating) +
+        0.4 * (ratings.vibe_rating) +
+        0.1 * (ratings.food_rating) +
+        0.1 * (ratings.price_rating) +
+        0.1 * (ratings.convenience_rating)) as Score,
+    ratings.coffee_rating as Coffee,
+    ratings.vibe_rating as Vibe,
+    ratings.price_rating as Price,
+    ratings.food_rating as Food,
+    ratings.convenience_rating as Convenience
+    FROM
+        ratings
+    JOIN
+        coffee_shops ON ratings.shop_id = coffee_shops.shop_id
+    JOIN
+        users ON ratings.user_id = users.user_id
+    ORDER BY
+        users.username,
+        coffee_shops.name;
+    '''
+    conn = get_connection()
+    first_result = pd.read_sql_query(query, conn)
+    result = format_column_names(first_result)
     conn.close()
     return result
