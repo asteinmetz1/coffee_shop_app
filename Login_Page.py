@@ -16,9 +16,6 @@ if 'logged_in' not in st.session_state:
 if 'username' not in st.session_state:
     st.session_state['username'] = None
 
-col1, col2, col3 = st.columns([1, 2, 1])  # Adjust proportions for alignment
-with col2:
-    st.image("Images/Brew'd-logo full just text.png", use_container_width=True)
 
 if st.session_state['logged_in'] == False:
     username = st.text_input('Username')
