@@ -11,6 +11,7 @@ from DATA.database import add_rating_to_coffee_shop
 import DATA.database as db_file
 # --------------PAGE CODE------------------- #
 st.logo("Images/Brew'd-logo.png", size='large')
+st.set_page_config(page_title="Brew'd", page_icon=':coffee')
 
 user_login_check_logout_page()
 

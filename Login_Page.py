@@ -2,6 +2,7 @@ import streamlit as st
 import sys
 import os
 st.logo("Images/Brew'd-logo.png", size='large')
+st.set_page_config(page_title="Brew'd", page_icon=':coffee')
 
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -12,7 +13,7 @@ from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, ret
 col1, col2, col3 = st.columns([1, 2, 1])  # Adjust proportions for alignment
 
 with col2:
-    st.image("Images/Brew'd-logo full just text.png", use_column_width=True)
+    st.image("Images/Brew'd-logo full just text.png", use_container_width=True)
 
 
 # Initialize session state for login

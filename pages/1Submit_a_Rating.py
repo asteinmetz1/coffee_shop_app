@@ -12,7 +12,7 @@ from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, ret
 
 # --------------PAGE CODE------------------- #
 st.logo("Images/Brew'd-logo.png", size='large')
-
+st.set_page_config(page_title="Brew'd", page_icon=':coffee')
 
 user_login_check()
 
@@ -32,7 +32,7 @@ if 'convenience_rating' not in st.session_state:
 
 # Rate an existing coffee shop
 coffee_shop = st.selectbox(index=None, placeholder='Select A Coffee Shop', label='Select A Coffee Shop',
-                           label_visibility='hidden', options=(
+                           label_visibility='hidden', options=sorted(
                 db_file.return_coffee_shop_table().name + " - " + db_file.return_coffee_shop_table().location))
 if coffee_shop:
     coffee_shop, location = coffee_shop.split(' - ', 1)

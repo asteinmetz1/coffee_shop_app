@@ -9,12 +9,13 @@ from DATA.auth import get_user_credentials, user_login_check, show_logged_in_use
 import DATA.database as db_file
 import DATA.calcs as calcs
 st.logo("Images/Brew'd-logo.png", size='large')
+st.set_page_config(page_title="Brew'd", page_icon=':coffee')
 
 # --------------PAGE CODE------------------- #
 user_login_check()
 st.title("Coffee Shop Ratings (vs. Average)")
 coffee_shop_df = db_file.return_coffee_shop_table()
-coffee_shop_list = [f"{row['name']} - {row['location']}" for index, row in coffee_shop_df.iterrows()]
+coffee_shop_list = sorted([f"{row['name']} - {row['location']}" for index, row in coffee_shop_df.iterrows()])
 try:
     coffee_shop = st.selectbox('Pick A Shop', coffee_shop_list)
     shop = coffee_shop.split(' - ', 1)[0]
