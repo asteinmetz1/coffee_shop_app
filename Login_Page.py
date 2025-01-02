@@ -9,6 +9,11 @@ from DATA.auth import get_user_credentials, new_user, show_logged_in_user, valid
 import DATA.database as db_file
 from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table, return_all_ratings
 
+col1, col2, col3 = st.columns([1, 2, 1])  # Adjust proportions for alignment
+
+with col2:
+    st.image("Images/Brew'd-logo full just text.png", caption="Header Image", use_column_width=True)
+
 
 # Initialize session state for login
 if 'logged_in' not in st.session_state:
