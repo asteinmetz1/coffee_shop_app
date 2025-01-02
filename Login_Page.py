@@ -12,7 +12,7 @@ from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, ret
 col1, col2, col3 = st.columns([1, 2, 1])  # Adjust proportions for alignment
 
 with col2:
-    st.image("Images/Brew'd-logo full just text.png", caption="Header Image", use_column_width=True)
+    st.image("Images/Brew'd-logo full just text.png", use_column_width=True)
 
 
 # Initialize session state for login
