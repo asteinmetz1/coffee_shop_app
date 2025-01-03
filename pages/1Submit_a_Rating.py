@@ -3,11 +3,11 @@ import sys
 import os
 
 # Add the parent directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
 import DATA.database as db_file
 from DATA.calcs import get_user_top_shops, return_coffee_shop_ratings_table, return_coffee_shop_table, return_all_ratings
-
 
 # --------------PAGE CODE------------------- #
 st.logo("Images/Brew'd-logo.png", size='large')
@@ -59,7 +59,7 @@ convenience_rating = st.slider(label='Convenience', min_value=1, max_value=10, v
 
 # submit to push to database
 if st.button(label='Submit'):
-    coffee_shop_id = db_file.return_coffee_shop_id(coffee_shop, location)
+    coffee_shop_id = db_file.return_coffee_shop_id(shop, location)
     if db_file.has_user_already_rated_shop(st.session_state['user_id'], coffee_shop_id):
         db_file.overwrite_rating_to_coffee_shop(st.session_state['user_id'], coffee_shop_id, coffee_rating,
                                                 food_rating, pricing_rating, vibe_rating, convenience_rating)
@@ -99,4 +99,5 @@ if st.session_state['username'] == 'Austin':
         db_file.add_image_url_to_coffee_shop(shop_id_for_url, image_url)
         st.write('Image Added')
         st.rerun()
+
 show_logged_in_user()
