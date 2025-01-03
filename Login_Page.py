@@ -19,32 +19,30 @@ if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
 if 'username' not in st.session_state:
     st.session_state['username'] = None
+if 'username' not in st.session_state:
+    st.session_state['user_id'] = None
 if 'rerun' not in st.session_state:
     st.session_state['rerun'] = False
 
-def login():
-    username = st.session_state['username_input']
-    password = st.session_state['password_input']
-    if validate_user(username, password):
-        st.session_state['logged_in'] = True
-        st.session_state['username'] = username
-        st.session_state['user_id'] = db_file.return_user_id(username)
-        st.success(f"Welcome, {username}!")
-        st.session_state['rerun'] = True
-    else:
-        st.error("Invalid username or password")
 
 if st.session_state['logged_in'] == False:
-    st.text_input('Username', key='username_input')
-    st.text_input('Password', type='password', key='password_input', on_change=login)
+    username = st.text_input('Username')
+    password = st.text_input('Password', type='password')
     if st.button("Log In"):
-        login()
+        if validate_user(username, password):
+            st.session_state['logged_in'] = True
+            st.session_state['username'] = username
+            st.session_state['user_id'] = db_file.return_user_id(username)
+            st.success(f"Welcome, {username}!")
+            st.switch_page("pages/3Ratings Summary.py")
+        else:
+            st.error("Invalid username or password")
     with st.popover("Add User"):
-        if st.button("Are You Sure?") and st.session_state['username_input'] != "":
-            new_user(st.session_state['username_input'], st.session_state['password_input'])
-        if st.session_state['username_input'] == "":
+        if st.button("Are You Sure?") and username != "":
+            new_user(username, password)
+        if username == "":
             st.write("Username Cannot be Blank")
-        if st.session_state['password_input'] == "":
+        if password == "":
             st.write("Password Cannot be Blank")
 else:
     st.success(f'You are logged {st.session_state["username"]}')
