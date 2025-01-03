@@ -63,6 +63,18 @@ def overwrite_rating_to_coffee_shop(user, coffee_shop, coffee, food, price, vibe
     cursor.close()
     conn.close()
 
+def add_image_url_to_coffee_shop(shop_id, image_url):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+    UPDATE coffee_shops
+    SET image_url = %s
+    WHERE shop_id = %s
+    ''', (image_url, shop_id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 def check_if_coffee_shop_already_exists(coffee_shop_name, coffee_shop_address):
     conn = get_connection()
     cursor = conn.cursor()

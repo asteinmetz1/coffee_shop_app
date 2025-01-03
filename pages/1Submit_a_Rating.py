@@ -3,7 +3,6 @@ import sys
 import os
 
 # Add the parent directory to the Python path
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from DATA.auth import get_user_credentials, user_login_check, show_logged_in_user
 import DATA.database as db_file
@@ -35,8 +34,8 @@ coffee_shop = st.selectbox(index=None, placeholder='Select A Coffee Shop', label
                            label_visibility='hidden', options=sorted(
                 db_file.return_coffee_shop_table().name + " - " + db_file.return_coffee_shop_table().location))
 if coffee_shop:
-    coffee_shop, location = coffee_shop.split(' - ', 1)
-    coffee_shop_id = db_file.return_coffee_shop_id(coffee_shop, location)
+    shop, location = coffee_shop.split(' - ', 1)
+    coffee_shop_id = db_file.return_coffee_shop_id(shop, location)
     if db_file.has_user_already_rated_shop(st.session_state['user_id'], coffee_shop_id):
         st.write('You have already rated this coffee shop')
         ratings_df = db_file.return_coffee_shop_ratings_table_w_user_id(st.session_state['user_id'], coffee_shop_id)
@@ -86,4 +85,18 @@ else:
 st.subheader('Coffee Shops in Database')
 st.dataframe(return_coffee_shop_table(), hide_index=True)
 
+if st.session_state['username'] == 'Austin':
+    st.divider()
+    st.subheader('Add Image')
+
+    coffee_shop_for_url = st.selectbox(placeholder='Select A Coffee Shop', label='Select A Coffee Shop',
+                               label_visibility='hidden', options=sorted(
+            db_file.return_coffee_shop_table().name + " - " + db_file.return_coffee_shop_table().location))
+    shop_for_url, location_for_url = coffee_shop_for_url.split(' - ', 1)
+    shop_id_for_url = db_file.return_coffee_shop_id(shop_for_url, location_for_url)
+    image_url = st.text_input('Image URL')
+    if st.button('Add Image'):
+        db_file.add_image_url_to_coffee_shop(shop_id_for_url, image_url)
+        st.write('Image Added')
+        st.rerun()
 show_logged_in_user()

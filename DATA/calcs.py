@@ -80,6 +80,7 @@ def return_coffee_shop_ratings_table():
     """Fetch the coffee_shops table as a Pandas DataFrame with proper headers."""
     query = '''
     SELECT
+    coffee_shops.image_url AS Image,
     coffee_shops.name AS Shop,
     coffee_shops.location AS Location,
     (
@@ -99,7 +100,7 @@ def return_coffee_shop_ratings_table():
     JOIN
         coffee_shops ON ratings.shop_id = coffee_shops.shop_id
     GROUP BY
-    coffee_shops.name, coffee_shops.location, coffee_shops.shop_id
+        coffee_shops.image_url, coffee_shops.name, coffee_shops.location, coffee_shops.shop_id
     order by Score desc;
     '''
     conn = get_connection()
