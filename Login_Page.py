@@ -26,7 +26,7 @@ if 'rerun' not in st.session_state:
 
 
 if st.session_state['logged_in'] == False:
-    username = st.text_input('Username')
+    username = st.text_input('Username',type='default')
     password = st.text_input('Password', type='password')
     if st.button("Log In"):
         if validate_user(username, password):
@@ -34,9 +34,9 @@ if st.session_state['logged_in'] == False:
             st.session_state['username'] = username
             st.session_state['user_id'] = db_file.return_user_id(username)
             st.success(f"Welcome, {username}!")
-            st.switch_page("pages/3Ratings Summary.py")
+            st.switch_page("pages/1Ratings.py")
         else:
-            st.error("Invalid username or password")
+            st.error("Invalid usernamew or password")
     with st.popover("Add User"):
         if st.button("Are You Sure?") and username != "":
             new_user(username, password)
