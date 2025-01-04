@@ -16,7 +16,7 @@ from DATA.database import  return_coffee_shop_id
 # --------------PAGE CODE------------------- #
 st.logo("Images/Brew'd-logo.png", size='large')
 user_login_check()
-st.title("Ratings Summary Page")
+st.title("Ratings")
 
 st.subheader('Coffee Shop Rankings')
 
