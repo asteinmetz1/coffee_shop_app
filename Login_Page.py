@@ -1,6 +1,4 @@
 import streamlit as st
-import sys
-import os
 st.logo("Images/Brew'd-logo.png", size='large')
 st.set_page_config(page_title="Brew'd", page_icon=':coffee')
 
@@ -36,7 +34,7 @@ if st.session_state['logged_in'] == False:
             st.success(f"Welcome, {username}!")
             st.switch_page("pages/1Ratings.py")
         else:
-            st.error("Invalid usernamew or password")
+            st.error("Invalid username or password")
     with st.popover("Add User"):
         if st.button("Are You Sure?") and username != "":
             new_user(username, password)
